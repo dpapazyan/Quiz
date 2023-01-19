@@ -9,7 +9,6 @@ class QuizApp:
         # print the greeting at startup
         self.greeting()
 
-        # TODO: ask the user for their name
         self.username = input("What is your name? ")
         print(f"Welcome {self.username}!")
         print()
@@ -39,7 +38,6 @@ class QuizApp:
     def menu(self):
         self.menu_header()
 
-        # TODO: get the user's selection and act on it. This loop will
         # run until the user exits the app
         selection = ""
         while(True):
@@ -59,7 +57,6 @@ class QuizApp:
                 continue
             elif selection[0] == "L":
                 print("\nAvailable Quizzes Are: ")
-                # TODO list the quizzes
                 self.qm.list_quizzes()
                 print("-----------------------\n")
                 continue
@@ -67,7 +64,6 @@ class QuizApp:
                 try:
                     quiznum = int(input("Quiz number: "))
                     print(f"You have selected quiz {quiznum}")
-                    # TODO start the quiz
                     self.qm.take_quiz(quiznum, self.username)
                     self.qm.print_results()
 

@@ -21,7 +21,7 @@ class QuizParser(xml.sax.ContentHandler):
 
     def __init__(self):
         self.new_quiz = Quiz()
-        #TODO: properties for the parser state and current question and answer
+        # properties for the parser state and current question and answer
         self._parse_state = QuizParserState.IDLE
         self._current_question = None
         self._current_answer = None
@@ -32,7 +32,7 @@ class QuizParser(xml.sax.ContentHandler):
             if quizfile.mode == "r":
                 quiztext = quizfile.read()
 
-        #TODO: parse the file
+        # parse the file
         xml.sax.parseString(quiztext, self)
         # return the finished quiz
         return self.new_quiz
@@ -41,7 +41,7 @@ class QuizParser(xml.sax.ContentHandler):
         if tagname == "QuizML":
             self._parse_state = QuizParserState.PARSE_QUIZ
             self.new_quiz.name = attrs["name"]
-        #TODO: process the rest of the tags
+        # process the rest of the tags
         elif tagname == "Description":
             self._parse_state = QuizParserState.PARSE_DESCRIPTION
         elif tagname == "Question":
@@ -62,7 +62,7 @@ class QuizParser(xml.sax.ContentHandler):
     def endElement(self, tagname):
         if tagname == "QuizML":
             self._parse_state = QuizParserState.IDLE
-        #TODO: process the rest of the tags
+        # process the rest of the tags
         elif tagname == "Description":
             self._parse_state = QuizParserState.PARSE_QUIZ
         elif tagname == "Question":
@@ -74,7 +74,7 @@ class QuizParser(xml.sax.ContentHandler):
             self._current_question.answers.append(self._current_answer)
             self._parse_state = QuizParserState.PARSE_QUESTION
     def characters(self, chars):
-        #TODO: process the text content
+        # process the text content
         if self._parse_state == QuizParserState.PARSE_DESCRIPTION:
             self.new_quiz.description += chars
         elif self._parse_state == QuizParserState.PARSE_QUEST_TEXT:
