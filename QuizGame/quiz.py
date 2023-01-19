@@ -1,5 +1,6 @@
 import datetime
 import sys
+import  random
 
 
 class Quiz:
@@ -10,6 +11,7 @@ class Quiz:
         self.score = 0
         self.correct_count = 0
         self.total_points = 0
+        self.complition_time = 0
 
     def print_header(self):
         print("\n\n*******************************************")
@@ -23,6 +25,7 @@ class Quiz:
         print("*******************************************", file=thefile, flush=True)
         print(f"RESULTS for {quiztaker}", file=thefile, flush=True)
         print(f"Date: {datetime.datetime.today()}", file=thefile, flush=True)
+        print(f"ELAPSED TIME: {self.complition_time}", file=thefile, flush=True)
         print(f"QUESTIONS: {self.correct_count} out of {len(self.questions)} correct", file=thefile, flush=True)
         print(f"SCORE: {self.score} points out of possible {self.total_points}", file=thefile, flush=True)
         print("*******************************************\n", file=thefile, flush=True)
@@ -31,10 +34,14 @@ class Quiz:
         # initialize the quiz state
         self.score = 0
         self.correct_count = 0
+        self.complition_time = 0
 
         # print the header
         self.print_header()
 
+        random.shuffle(self.questions)
+
+        starttime = datetime.datetime.now()
         # execute each question and record the result
         for q in self.questions:
             q.ask()
@@ -43,6 +50,22 @@ class Quiz:
                 self.score += q.points
             print("------------------------------------------------\n")
 
+        endtime = datetime.datetime.now()
+
+        if self.correct_count != len(self.questions):
+            response = input("\nIt looks like you missed some questions. Re-do the wrong ones? (y/n) ").lower()
+            if response[0] == "y":
+                wrong_qs = [q for q in self.questions if q.is_correct == False]
+                for q in self.questions:
+                    q.ask()
+                    if (q.is_correct):
+                        self.correct_count += 1
+                        self.score += q.points
+                    print("------------------------------------------------\n")
+                endtime = datetime.datetime.now()
+
+        self.complition_time = endtime - starttime
+        self.complition_time = datetime.timedelta(seconds=round(self.complition_time.total_seconds()))
         # return the results
         return (self.score, self.correct_count, self.total_points)
 
