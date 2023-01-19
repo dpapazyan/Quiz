@@ -1,6 +1,9 @@
+from quizmanager import QuizManager
 class QuizApp:
+    QUIZ_FOLDER = "Quizzes"
     def __init__(self):
         self.username = ""
+        self.qm = QuizManager(QuizApp.QUIZ_FOLDER)
 
     def startup(self):
         # print the greeting at startup
@@ -57,6 +60,7 @@ class QuizApp:
             elif selection[0] == "L":
                 print("\nAvailable Quizzes Are: ")
                 # TODO list the quizzes
+                self.qm.list_quizzes()
                 print("-----------------------\n")
                 continue
             elif selection[0] == "T":
@@ -64,6 +68,13 @@ class QuizApp:
                     quiznum = int(input("Quiz number: "))
                     print(f"You have selected quiz {quiznum}")
                     # TODO start the quiz
+                    self.qm.take_quiz(quiznum, self.username)
+                    self.qm.print_results()
+
+                    dosave = input("Save the resutls? (y/n): ")
+                    dosave = dosave.capitalize()
+                    if len(dosave) > 0 and dosave[0] == "Y":
+                        self.qm.save_results()
                 except:
                     self.menu_error()
             else:

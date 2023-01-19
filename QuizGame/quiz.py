@@ -1,6 +1,9 @@
+import datetime
+import sys
+
+
 class Quiz:
     def __init__(self):
-        # TODO: define the quiz properties
         self.name = ""
         self.description = ""
         self.questions = []
@@ -10,40 +13,38 @@ class Quiz:
 
     def print_header(self):
         print("\n\n*******************************************")
-        # TODO: print the quiz header
         print(f"QUIZ NAME: {self.name}")
         print(f"DESCRIPTION: {self.description}")
         print(f"QUESTIONS: {len(self.questions)}")
         print(f"TOTAL POINTS: {self.total_points}")
-
         print("*******************************************\n")
 
-    def print_results(self):
-        print("*******************************************")
-
-        print("*******************************************\n")
+    def print_results(self, quiztaker, thefile = sys.stdout):
+        print("*******************************************", file=thefile, flush=True)
+        print(f"RESULTS for {quiztaker}", file=thefile, flush=True)
+        print(f"Date: {datetime.datetime.today()}", file=thefile, flush=True)
+        print(f"QUESTIONS: {self.correct_count} out of {len(self.questions)} correct", file=thefile, flush=True)
+        print(f"SCORE: {self.score} points out of possible {self.total_points}", file=thefile, flush=True)
+        print("*******************************************\n", file=thefile, flush=True)
 
     def take_quiz(self):
-        # TODO: initialize the quiz state
+        # initialize the quiz state
         self.score = 0
         self.correct_count = 0
-        for q in self.questions:
-            q.is_correct = False
 
-        # TODO: print the header
+        # print the header
         self.print_header()
 
-        # TODO: execute each question and record the result
+        # execute each question and record the result
         for q in self.questions:
             q.ask()
             if (q.is_correct):
                 self.correct_count += 1
                 self.score += q.points
+            print("------------------------------------------------\n")
 
-        print("*******************************************\n")
-        # TODO: return the results
-        return(self.score, self.correct_count, self.total_points)
-
+        # return the results
+        return (self.score, self.correct_count, self.total_points)
 
 
 class Question:
@@ -78,7 +79,7 @@ class QuestionTF(Question):
             break
 
 
-class QuestioncMC(Question):
+class QuestionMC(Question):
     def __init__(self):
         super().__init__()
         self.answers = []
@@ -106,36 +107,3 @@ class Answer:
     def __init__(self):
         self.text = ""
         self.name = ""
-
-if __name__ == "__main__":
-    qz = Quiz()
-    qz.name = "Sample Quiz"
-    qz.description = "This is a sample quiz!"
-
-    q1 = QuestionTF()
-    q1.text = "Broccoli is good for you"
-    q1.points = 5
-    q1.correct_answer = "t"
-    qz.questions.append(q1)
-
-    q2 = QuestioncMC()
-    q2.text = "What is 2+2?"
-    q2.points = 10
-    q2.correct_answer = "b"
-    ans = Answer()
-    ans.name = "a"
-    ans.text = "3"
-    q2.answers.append(ans)
-    ans = Answer()
-    ans.name = "b"
-    ans.text = "4"
-    q2.answers.append(ans)
-    ans = Answer()
-    ans.name = "c"
-    ans.text = "5"
-    q2.answers.append(ans)
-    qz.questions.append(q2)
-
-    qz.total_points = q1.points + q2.points
-    result = qz.take_quiz()
-    print(result)
